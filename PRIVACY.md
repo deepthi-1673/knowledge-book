@@ -42,4 +42,4 @@ everything by clearing the extension's data or uninstalling the extension.
 
 ## Contact
 
-Questions about this policy: karanamdeepthi59@gmail.com
+Questions about this policy: karanamdeepthi16@gmail.com
