@@ -1,84 +1,122 @@
-# 📖 Knowledge Book
+# Knowledge Book
 
-A personal browser extension that turns the good bits of your **ChatGPT** and **Claude**
-chats into a browsable **book of concise notes**. Highlight something worth keeping,
-click Save, and the extension uses the **OpenRouter API** to write a short title, summary,
-key points, and topic tags — then files it in your book so you can find it later.
-OpenRouter lets one key route to many models (OpenAI, Anthropic, Google, Llama, …).
+> Save highlighted text from any web page into a searchable, organized book of notes — with optional AI summaries and one-click export to Obsidian.
 
-Everything is stored **locally on your machine**. Your API key and notes never leave
-your computer except for the direct call to OpenRouter that writes each note.
+![Manifest V3](https://img.shields.io/badge/Manifest-V3-4c1?style=flat-square)
+![Chrome & Edge](https://img.shields.io/badge/Chrome%20%7C%20Edge-supported-blue?style=flat-square)
+![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+
+Knowledge Book is a browser extension for keeping the parts of the web worth remembering.
+Highlight text on any page — a ChatGPT or Claude answer, documentation, an article, a
+dashboard — and save it as a note. Notes keep their formatting, get filed into pages you
+create, and stay searchable. Everything lives **on your own device**.
 
 ---
 
-## Install (Chrome or Edge)
+## Features
 
-1. Open **`chrome://extensions`** (or `edge://extensions`).
-2. Turn on **Developer mode** (top-right toggle).
-3. Click **Load unpacked** and select this folder:
-   `C:\Users\KaranamDeepthi\personal_project\knowledge-book`
-4. The 📖 icon appears in your toolbar. (Pin it for easy access.)
+- **Save from anywhere** — highlight text on any site, then use the floating **Save to Book**
+  button or the right-click menu. On ChatGPT and Claude, a per-message **Save** button lets
+  you grab a whole reply at once.
+- **Verbatim by default** — notes store exactly what you highlighted. No summarizing unless
+  you ask for it.
+- **Structure preserved** — tables, lists, headings, and code blocks survive the save and
+  render cleanly in your book.
+- **Pages (notebooks)** — organize notes into pages you create, and move notes between them.
+- **Optional AI summaries** — add your own [OpenRouter](https://openrouter.ai) API key to
+  auto-generate a title, summary, key points, and tags. Off by default.
+- **Send to Obsidian** — export a single note, or a whole page, to your Obsidian vault with
+  one click.
+- **Markdown export** — download everything as a `.md` file.
+- **Private by design** — notes and settings never leave your device (see
+  [Privacy](#privacy)).
 
-## Set up your API key
+---
 
-1. Click the 📖 icon → **Settings** (or right-click the icon → Options).
-2. Paste your **OpenRouter API key** (get one at
-   <https://openrouter.ai/keys>).
-3. Leave the model as `openai/gpt-4o-mini` (cheap + good), or change it to any model on
-   <https://openrouter.ai/models> written as `provider/model`
-   (e.g. `anthropic/claude-3.5-sonnet`, `google/gemini-flash-1.5`). Click **Save settings**.
+## Install
 
-> No key yet? The extension still works — it just saves the raw text without an
-> AI note. Add a key any time to turn on summaries.
+### From source (developer mode)
 
-## How to use
+1. Download or clone this repository.
+2. Open `chrome://extensions` (or `edge://extensions`).
+3. Turn on **Developer mode** (top-right).
+4. Click **Load unpacked** and select the project folder.
+5. Pin the toolbar icon for quick access.
 
-Works on **any website** (ChatGPT, Claude, docs, blogs, anything):
+> A Chrome Web Store listing is on the way.
 
-- **Highlight** any text → a floating **📖** button appears at the bottom-right → click it, **or**
+---
+
+## Usage
+
+On **any web page**:
+
+- **Highlight** text → click the floating **Save to Book** button (bottom-right), **or**
 - **Right-click** the selection → **Save selection to Knowledge Book**.
-- On **ChatGPT / Claude** specifically, you can also hover a message and click the little
-  **📖 Save** button to grab the whole message.
+- On **ChatGPT / Claude**, hover a message and click **Save** to capture the whole reply.
 
-Tables, lists, headings, and code in the highlighted text are preserved.
+Open your collection from the toolbar popup → **Open my Book**. There you can search, filter
+by page/source/topic, move notes between pages, export, or send to Obsidian.
 
-A note is generated and added to your book. Open the book from the toolbar popup →
-**Open my Book**.
+### Optional: AI summaries
 
-## Your book
+1. Open the extension **Settings** (popup → *Settings*).
+2. Paste an [OpenRouter API key](https://openrouter.ai/keys).
+3. Choose a model (`provider/model`, e.g. `openai/gpt-4o-mini`, `anthropic/claude-3.5-sonnet`).
+4. Turn on **Summarize with AI when I save**.
 
-- **Pages (notebooks):** the sidebar lists your pages. Click **＋** next to *Pages* to
-  create one (e.g. "SQL", "Interview prep"). New saves land in your **default page**
-  (set in Settings, default `Inbox`). Move any note to another page with the little
-  dropdown on the note. Rename/Delete a page from the buttons at the top of the page view
-  (deleting a page moves its notes to `Inbox`, it never deletes notes).
-- **Send to Obsidian:** click **Obsidian** on a note to create it in your vault instantly,
-  or **⬗ Send page to Obsidian** to drop the whole page in as one note. Set your vault name
-  (and optional folder) in Settings. The note is also copied to your clipboard as a backup.
-  Requires the Obsidian app installed on this machine.
-- **Search** across every note; filter by **source** (ChatGPT / Claude) or **topic tag**.
-- Notes show the full highlighted text with **tables, lists, headings, and code preserved**.
-- **Copy** the exact text, **Delete** notes, or **Export all** to a `.md` file.
+The key is stored locally and used only to call OpenRouter directly from your browser.
+
+### Optional: Obsidian export
+
+Set your **vault name** (and an optional folder) in Settings, then use the **Obsidian**
+button on a note — or **Send page to Obsidian** — to create the note in your vault via an
+`obsidian://` link. Requires the Obsidian desktop app installed.
 
 ---
 
-## Files
+## Privacy
+
+- **Local-first:** your notes and settings are stored on your device using the browser's
+  extension storage. They are never sent to the developer.
+- **No tracking:** no analytics, no ads, no third-party trackers.
+- **Third parties, only on request:** content is sent to OpenRouter *only* if you enable AI
+  summaries (using your own key), and to the Obsidian app *only* when you click Send to
+  Obsidian.
+
+Full policy: [PRIVACY.md](PRIVACY.md).
+
+### Permissions
+
+| Permission | Why it's needed |
+|---|---|
+| Host access (all sites) | To let you save text on any page you visit. Page content is read **only** when you explicitly trigger a save. |
+| `storage` | To keep your notes and settings on your device. |
+| `contextMenus` | To add the "Save selection to Knowledge Book" right-click item. |
+| `notifications` | To let you know if a save fails. |
+
+No remote code is used — all logic ships inside the extension package.
+
+---
+
+## Project structure
 
 | File | Purpose |
-|------|---------|
-| `manifest.json` | Extension definition (MV3) |
-| `background.js` | Context menu, OpenAI call, storage |
-| `content.js` / `content.css` | On-page Save buttons + toasts |
-| `popup.html/js/css` | Toolbar popup (recent notes, quick actions) |
-| `options.html/js` | API key & model settings |
-| `book.html/js/css` | The book viewer |
-| `icons/` | Toolbar icons |
+|---|---|
+| `manifest.json` | Extension definition (Manifest V3) |
+| `background.js` | Context menu, storage, and the OpenRouter call |
+| `content.js` / `content.css` | On-page capture (button, right-click, structure→Markdown) |
+| `book.html` / `book.js` / `book.css` | The book viewer (pages, search, export, Obsidian) |
+| `popup.html` / `popup.js` / `popup.css` | Toolbar popup |
+| `options.html` / `options.js` | Settings |
+| `icons/` | Toolbar and store icons |
 
-## Notes & privacy
+---
 
-- The API key is stored in Chrome's local extension storage and sent **only** to
-  `openrouter.ai`. It is never sent anywhere else.
-- Notes live in local storage too — clearing the extension's data (or removing the
-  extension) deletes them. Use **Export all** to keep a backup.
-- Site markup on ChatGPT/Claude changes over time; if the per-message Save buttons ever
-  stop appearing, the floating button and right-click menu still work.
+## Tech
+
+Vanilla JavaScript, HTML, and CSS — no build step, no dependencies. Manifest V3.
+
+## License
+
+Released under the [MIT License](LICENSE).
