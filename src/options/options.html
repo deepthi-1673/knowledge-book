@@ -116,8 +116,12 @@
         </p>
         <input id="obsidianVault" type="text" placeholder="My Vault" />
 
-        <label for="obsidianFolder" style="margin-top:16px;">Obsidian folder (optional)</label>
-        <p class="hint">Subfolder inside the vault to file notes into, e.g. <code>Knowledge Book</code>. Leave blank for the vault root.</p>
+        <label for="obsidianFolder" style="margin-top:16px;">Obsidian base folder (optional)</label>
+        <p class="hint">
+          Notes are filed as <code>&lt;folder&gt;/&lt;page&gt;/&lt;note&gt;</code> in your vault — each page becomes
+          its own subfolder. Example base folder: <code>Knowledge Book</code>. Leave blank to use the vault root
+          (notes still get organized into per-page subfolders).
+        </p>
         <input id="obsidianFolder" type="text" placeholder="Knowledge Book" />
 
         <div style="margin-top:18px;">
