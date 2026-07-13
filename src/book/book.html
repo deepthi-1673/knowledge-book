@@ -18,6 +18,17 @@
     </aside>
 
     <main class="bk-main">
+      <section id="bk-ask" class="bk-ask" hidden>
+        <div class="bk-ask-bar">
+          <span class="bk-ask-spark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.6L19.5 9l-5.8 1.4L12 16l-1.7-5.6L4.5 9l5.8-1.4L12 2z"/></svg>
+          </span>
+          <input id="bk-ask-input" class="bk-ask-input" type="text" placeholder="Ask your notes anything…" />
+          <button id="bk-ask-send" class="bk-ask-send">Ask</button>
+        </div>
+        <div id="bk-ask-answer" class="bk-ask-answer" hidden></div>
+      </section>
+
       <header class="bk-head">
         <h1 id="bk-title">All notes</h1>
         <span id="bk-count" class="bk-count"></span>

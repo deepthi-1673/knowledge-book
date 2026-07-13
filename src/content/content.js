@@ -165,10 +165,26 @@
   }
 
   // ---------- save ----------
+  // The extension "context" dies for content scripts already running in a tab
+  // when the extension is reloaded/updated. Detect that and tell the user to
+  // refresh, instead of throwing a cryptic "reading 'sendMessage'" error.
+  const STALE_MSG = "Knowledge Book was updated — refresh this page (F5), then save again.";
+  function extAlive() {
+    try {
+      return !!(chrome && chrome.runtime && chrome.runtime.id);
+    } catch (_) {
+      return false;
+    }
+  }
+
   function save(text) {
     const clean = (text || "").trim();
     if (!clean) {
       toast("Select some text first, then click Save to Book");
+      return;
+    }
+    if (!extAlive()) {
+      toast(STALE_MSG);
       return;
     }
     toast("Saving to your book…");
@@ -180,7 +196,8 @@
         },
         (resp) => {
           if (chrome.runtime.lastError) {
-            toast("Error: " + chrome.runtime.lastError.message);
+            const m = chrome.runtime.lastError.message || "";
+            toast(/context invalidated|receiving end|Extension context/i.test(m) ? STALE_MSG : "Error: " + m);
             return;
           }
           if (resp?.ok) {
@@ -192,7 +209,8 @@
         }
       );
     } catch (e) {
-      toast("Error: " + (e.message || e));
+      const m = String((e && e.message) || e);
+      toast(/context invalidated|sendMessage|undefined/i.test(m) ? STALE_MSG : "Error: " + m);
     }
   }
 

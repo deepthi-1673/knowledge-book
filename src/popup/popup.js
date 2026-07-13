@@ -26,12 +26,12 @@ async function render() {
   const hasKey = settings.apiKey && settings.apiKey.trim();
   const aiOn = settings.useAI === true;
   const n = entries.length;
-  if (!aiOn) {
-    statusEl.textContent = n + " notes · saving exact text";
-  } else if (hasKey) {
-    statusEl.textContent = n + " notes · AI summaries on";
+  if (!hasKey) {
+    statusEl.textContent = n + " notes · add a key to unlock Ask";
+  } else if (aiOn) {
+    statusEl.textContent = n + " notes · Ask + AI summaries on";
   } else {
-    statusEl.textContent = n + " notes · AI on, add a key in Settings";
+    statusEl.textContent = n + " notes · Ask your book enabled";
   }
 
   const list = document.getElementById("pk-list");
@@ -41,7 +41,12 @@ async function render() {
     const item = document.createElement("div");
     item.className = "pk-item";
     const h = document.createElement("h3");
-    h.textContent = e.note?.title || "Untitled note";
+    h.textContent = (e.note?.title || "Saved text")
+      .replace(/^\s*#{1,6}\s+/, "")
+      .replace(/^\s*>\s+/, "")
+      .replace(/^\s*[-*+]\s+/, "")
+      .replace(/[*_`]/g, "")
+      .trim() || "Saved text";
     const p = document.createElement("p");
     p.textContent = e.note?.summary || e.original?.slice(0, 120) || "";
     const meta = document.createElement("div");

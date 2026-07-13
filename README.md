@@ -28,10 +28,16 @@ create, and stay searchable. Everything lives **on your own device**.
   its handle onto a page** in the sidebar, or with the dropdown on the note.
 - **Optional AI summaries** — add your own [OpenRouter](https://openrouter.ai) API key to
   auto-generate a title, summary, key points, and tags. Off by default.
+- **Ask your book (AI)** — with an OpenRouter key set, ask a question and get an answer
+  drawn from your **own saved notes**, with citations to the notes it used. Your archive
+  becomes a queryable second brain, not just an archive.
+- **Per-note AI actions** — expand any note and use **Explain simply**, **Give an example**,
+  or **Quiz me**, powered by your key.
 - **Obsidian export** — send a single note or a whole page via an `obsidian://` link, or
   **Export all to Obsidian** to write your entire book into the vault as files, organized
   into per-page folders.
 - **Markdown export** — download everything as a single `.md` file.
+- **Light & dark mode** — the whole UI follows your system theme automatically.
 - **Private by design** — notes and settings never leave your device (see
   [Privacy](#privacy)).
 
@@ -61,9 +67,11 @@ On **any web page**:
   selection are captured too).
 - On **ChatGPT / Claude**, hover a message and click **Save** to capture the whole reply.
 
-Open your collection from the toolbar popup → **Open my Book**. There you can search, filter
-by page/source/topic, and export. To move a note between pages, **drag its handle** (the
-dotted grip on the note) onto a page in the sidebar, or use the dropdown on the note.
+Open your collection from the toolbar popup → **Open my Book**. Notes are shown as a clean,
+scannable list — each is **collapsed to a title + short preview**; click a note to expand and
+read it in full, click again to collapse. You can search, filter by page/source/topic, and
+export. To move a note between pages, **drag its handle** (the dotted grip on the note) onto a
+page in the sidebar, or use the dropdown on the note.
 
 ### Optional: AI summaries
 
@@ -73,6 +81,15 @@ dotted grip on the note) onto a page in the sidebar, or use the dropdown on the 
 4. Turn on **Summarize with AI when I save**.
 
 The key is stored locally and used only to call OpenRouter directly from your browser.
+
+### Ask your book
+
+Once a key is set, an **Ask** bar appears at the top of the book. Type a question and get an
+answer synthesized from your saved notes, with the source notes listed underneath. Only the
+notes most relevant to your question are sent to OpenRouter as context.
+
+Expanding a note also reveals **per-note AI actions** — **Explain simply**, **Give an
+example**, and **Quiz me** — which run against just that note.
 
 ### Optional: Obsidian export
 

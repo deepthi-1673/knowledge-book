@@ -77,7 +77,16 @@ function fallbackNote(text, source) {
   if (img) {
     title = img[1].trim() || "Image";
   } else {
-    const words = firstLine.split(/\s+/);
+    // strip leading markdown (##, >, -, 1., **, `) so the title is clean text
+    const clean = firstLine
+      .replace(/^\s*#{1,6}\s+/, "")
+      .replace(/^\s*>\s+/, "")
+      .replace(/^\s*[-*+]\s+/, "")
+      .replace(/^\s*\d+\.\s+/, "")
+      .replace(/[*_`]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const words = clean.split(/\s+/);
     title = words.slice(0, 10).join(" ") + (words.length > 10 ? "…" : "");
   }
   return {
@@ -98,6 +107,49 @@ async function flashBadge(text, color) {
     await chrome.action.setBadgeText({ text });
     setTimeout(() => chrome.action.setBadgeText({ text: "" }), 2500);
   } catch (_) {}
+}
+
+// ---------- Ask-your-book (Q&A over the user's saved notes) ----------
+async function askBook(question, context, settings) {
+  const system =
+    "You are the user's personal knowledge assistant. Answer the question using ONLY the " +
+    "notes provided as context below. Be concise and specific. Cite the notes you use by " +
+    "their title in square brackets, e.g. [Title]. If the notes do not contain the answer, " +
+    "say so plainly and suggest what the user could save. Format your answer in Markdown.";
+
+  const body = {
+    model: settings.model || DEFAULT_MODEL,
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: "Notes:\n\n" + context + "\n\n---\nQuestion: " + question }
+    ],
+    temperature: 0.2
+  };
+
+  const res = await fetch(OPENROUTER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + settings.apiKey,
+      "HTTP-Referer": "https://knowledge-book.extension",
+      "X-Title": "Knowledge Book"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    let detail = "";
+    try {
+      const err = await res.json();
+      detail = err?.error?.message || JSON.stringify(err);
+    } catch (_) {
+      detail = await res.text().catch(() => "");
+    }
+    throw new Error("OpenRouter API " + res.status + ": " + detail);
+  }
+
+  const data = await res.json();
+  return (data?.choices?.[0]?.message?.content || "").trim();
 }
 
 // ---------- OpenAI summarization ----------
@@ -314,5 +366,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ ok: false, error: String(err.message || err) });
       });
     return true; // keep channel open for async response
+  }
+  if (msg?.type === "ASK_BOOK") {
+    (async () => {
+      const settings = await getSettings();
+      if (!settings.apiKey) throw new Error("Add an OpenRouter API key in Settings first.");
+      return askBook(msg.question || "", msg.context || "", settings);
+    })()
+      .then((answer) => sendResponse({ ok: true, answer }))
+      .catch((err) => sendResponse({ ok: false, error: String(err.message || err) }));
+    return true;
   }
 });

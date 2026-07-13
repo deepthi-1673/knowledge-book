@@ -1,37 +1,41 @@
-/* Knowledge Book — injected UI */
+/* Knowledge Book — injected UI (kept brand-consistent on any site) */
 
 .kb-fab {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
+  right: 22px;
+  bottom: 22px;
   border: none;
-  background: #7c3aed;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
   color: #fff;
   font: 600 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  padding: 11px 16px;
-  border-radius: 22px;
+  padding: 12px 18px;
+  border-radius: 999px;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.45);
   z-index: 2147483646;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
 }
 .kb-fab:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(124, 58, 237, 0.5);
+  box-shadow: 0 12px 30px rgba(124, 58, 237, 0.55);
+  filter: brightness(1.05);
+}
+.kb-fab:active {
+  transform: scale(0.97);
 }
 
 .kb-toast {
   position: fixed;
   left: 50%;
-  bottom: 84px;
+  bottom: 90px;
   transform: translateX(-50%) translateY(12px);
   max-width: 80vw;
-  background: #1f2937;
+  background: #17171c;
   color: #fff;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font: 500 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  padding: 11px 18px;
+  border-radius: 12px;
+  font: 500 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
   opacity: 0;
   pointer-events: none;
   z-index: 2147483647;
@@ -51,19 +55,37 @@
   top: 4px;
   right: 4px;
   border: none;
-  background: rgba(124, 58, 237, 0.9);
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
   color: #fff;
-  font: 600 11px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  padding: 5px 8px;
-  border-radius: 6px;
+  font: 600 11px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 6px 10px;
+  border-radius: 8px;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.15s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  transition: opacity 0.15s ease, filter 0.15s ease;
   z-index: 2147483645;
 }
 .kb-msg:hover > .kb-msg-btn {
   opacity: 1;
 }
 .kb-msg-btn:hover {
-  background: #6d28d9;
+  filter: brightness(1.08);
+}
+
+/* polish */
+@media (prefers-reduced-motion: no-preference) {
+  .kb-fab {
+    animation: kb-fab-in 0.16s ease;
+  }
+}
+@keyframes kb-fab-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
