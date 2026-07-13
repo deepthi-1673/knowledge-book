@@ -193,6 +193,25 @@ body {
 .bk-src.Claude { background: var(--claude); }
 .bk-src.Web { background: #6b7280; }
 .bk-date { font-size: 12px; color: var(--muted); }
+.bk-drag {
+  display: inline-flex;
+  align-items: center;
+  color: #c3bcae;
+  cursor: grab;
+  padding: 2px;
+  border-radius: 4px;
+  flex: none;
+}
+.bk-drag:hover { color: var(--accent); background: #f0ece3; }
+.bk-drag:active { cursor: grabbing; }
+.bk-entry.bk-dragging { opacity: 0.45; }
+.bk-toc-item.bk-drop {
+  background: var(--accent);
+  color: #fff;
+  outline: 2px dashed rgba(255, 255, 255, 0.7);
+  outline-offset: -3px;
+}
+.bk-toc-item.bk-drop .bk-badge { background: rgba(255, 255, 255, 0.25); }
 .bk-noai { font-size: 11px; color: var(--muted); font-style: italic; }
 .bk-entry-actions { margin-left: auto; display: flex; gap: 6px; }
 .bk-icon-btn {
