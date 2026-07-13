@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="book.css" />
+    <title>My Knowledge Book</title>
+  </head>
+  <body>
+    <aside class="bk-side">
+      <div class="bk-brand"><span class="bk-logo">KB</span> Knowledge Book</div>
+      <input id="bk-search" class="bk-search" type="search" placeholder="Search your notes…" />
+      <nav id="bk-toc" class="bk-toc"></nav>
+      <div class="bk-side-foot">
+        <button id="bk-export" class="bk-ghost">Export all</button>
+        <button id="bk-settings" class="bk-ghost">Settings</button>
+      </div>
+    </aside>
+
+    <main class="bk-main">
+      <header class="bk-head">
+        <h1 id="bk-title">All notes</h1>
+        <span id="bk-count" class="bk-count"></span>
+        <span id="bk-head-actions" class="bk-head-actions"></span>
+      </header>
+      <div id="bk-entries" class="bk-entries"></div>
+      <div id="bk-empty" class="bk-emptystate" hidden>
+        <div class="bk-empty-mark" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+        </div>
+        <h2>Your book is empty</h2>
+        <p>
+          On any page, highlight something worth keeping and click the
+          <strong>Save to Book</strong> button (or right-click &rarr; <em>Save selection to Knowledge Book</em>).
+          Your notes will collect here.
+        </p>
+      </div>
+    </main>
+
+    <script src="book.js"></script>
+  </body>
+</html>

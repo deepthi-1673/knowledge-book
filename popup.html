@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>Knowledge Book</title>
+  </head>
+  <body>
+    <header class="pk-head">
+      <span class="pk-logo">KB</span>
+      <div>
+        <h1>Knowledge Book</h1>
+        <p id="pk-status" class="pk-status">Loading…</p>
+      </div>
+    </header>
+
+    <div class="pk-actions">
+      <button id="pk-open" class="pk-btn pk-primary">Open my Book</button>
+      <button id="pk-options" class="pk-btn">Settings</button>
+    </div>
+
+    <div class="pk-recent">
+      <h2>Recent notes</h2>
+      <div id="pk-list" class="pk-list">
+        <p class="pk-empty">Nothing saved yet. Highlight text on any page and click the Save to Book button.</p>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
