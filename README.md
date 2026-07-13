@@ -101,15 +101,16 @@ No remote code is used — all logic ships inside the extension package.
 
 ## Project structure
 
-| File | Purpose |
-|---|---|
-| `manifest.json` | Extension definition (Manifest V3) |
-| `background.js` | Context menu, storage, and the OpenRouter call |
-| `content.js` / `content.css` | On-page capture (button, right-click, structure→Markdown) |
-| `book.html` / `book.js` / `book.css` | The book viewer (pages, search, export, Obsidian) |
-| `popup.html` / `popup.js` / `popup.css` | Toolbar popup |
-| `options.html` / `options.js` | Settings |
-| `icons/` | Toolbar and store icons |
+```
+manifest.json            Extension definition (Manifest V3)
+icons/                   Toolbar and store icons
+src/
+  background/            Service worker: context menu, storage, OpenRouter call
+  content/               On-page capture (button, right-click, structure → Markdown)
+  book/                  The book viewer (pages, search, export, Obsidian)
+  popup/                 Toolbar popup
+  options/               Settings page
+```
 
 ---
 

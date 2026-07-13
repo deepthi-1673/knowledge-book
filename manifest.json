@@ -11,10 +11,10 @@
     "https://openrouter.ai/*"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background/background.js"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup/popup.html",
     "default_title": "Knowledge Book",
     "default_icon": {
       "16": "icons/icon16.png",
@@ -27,12 +27,12 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "options_page": "options.html",
+  "options_page": "src/options/options.html",
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"],
-      "css": ["content.css"],
+      "js": ["src/content/content.js"],
+      "css": ["src/content/content.css"],
       "run_at": "document_idle"
     }
   ]

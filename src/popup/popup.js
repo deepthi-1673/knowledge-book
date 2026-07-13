@@ -54,7 +54,7 @@ async function render() {
 }
 
 function openBook() {
-  chrome.tabs.create({ url: chrome.runtime.getURL("book.html") });
+  chrome.tabs.create({ url: chrome.runtime.getURL("src/book/book.html") });
 }
 
 document.getElementById("pk-open").addEventListener("click", openBook);
