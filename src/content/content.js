@@ -41,6 +41,12 @@
         const t = inner().trim();
         return href && /^https?:/i.test(href) ? "[" + t + "](" + href + ")" : t;
       }
+      case "img": {
+        const src = node.currentSrc || node.src || node.getAttribute("src") || "";
+        if (!src) return "";
+        const alt = (node.getAttribute("alt") || "").replace(/[[\]"\n]/g, " ").trim();
+        return "\n![" + alt + "](" + src + ")\n";
+      }
       case "h1":
         return "\n# " + inner().trim() + "\n";
       case "h2":

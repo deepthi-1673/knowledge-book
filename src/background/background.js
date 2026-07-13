@@ -72,8 +72,14 @@ function makeId() {
 function fallbackNote(text, source) {
   // Verbatim save: keep the exact text; derive only a short title for the card.
   const firstLine = (text.split(/\r?\n/).map((s) => s.trim()).find(Boolean) || text.trim());
-  const words = firstLine.split(/\s+/);
-  const title = words.slice(0, 10).join(" ") + (words.length > 10 ? "…" : "");
+  let title;
+  const img = firstLine.match(/^!\[([^\]]*)\]\(/);
+  if (img) {
+    title = img[1].trim() || "Image";
+  } else {
+    const words = firstLine.split(/\s+/);
+    title = words.slice(0, 10).join(" ") + (words.length > 10 ? "…" : "");
+  }
   return {
     title: title || "Saved text",
     summary: "",
@@ -174,9 +180,11 @@ async function handleSave({ text, source, url, pageTitle }) {
   const settings = await getSettings();
   source = source || detectSource(url);
 
+  const imageOnly = /^!\[[^\]]*\]\([^)]+\)$/.test(clean);
+
   let note;
   let aiUsed = false;
-  if (settings.useAI && settings.apiKey) {
+  if (settings.useAI && settings.apiKey && !imageOnly) {
     note = await summarize(clean, settings, source);
     aiUsed = true;
   } else {
@@ -216,16 +224,31 @@ async function handleSave({ text, source, url, pageTitle }) {
 }
 
 // ---------- context menu ----------
-chrome.runtime.onInstalled.addListener(async () => {
-  chrome.contextMenus.create({
-    id: "kb-save-selection",
-    title: "Save selection to Knowledge Book",
-    contexts: ["selection"]
+function setupMenus() {
+  // removeAll first so a leftover item can't cause a duplicate-id error that
+  // aborts creation of the remaining items.
+  chrome.contextMenus.removeAll(() => {
+    chrome.contextMenus.create({
+      id: "kb-save-selection",
+      title: "Save selection to Knowledge Book",
+      contexts: ["selection"]
+    });
+    chrome.contextMenus.create({
+      id: "kb-save-image",
+      title: "Save image to Knowledge Book",
+      contexts: ["image"]
+    });
   });
+}
+
+chrome.runtime.onInstalled.addListener(async () => {
+  setupMenus();
   // seed the default page so the book has something to show
   const pages = await getPages();
   await setPages(pages);
 });
+// also (re)create menus when the browser/extension starts up
+chrome.runtime.onStartup.addListener(setupMenus);
 
 function saveSelectionTextFallback(info, tab) {
   handleSave({
@@ -247,14 +270,32 @@ function saveSelectionTextFallback(info, tab) {
 }
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId !== "kb-save-selection") return;
-  // Prefer the content script so the selection keeps its structure (tables, lists).
-  if (tab?.id != null) {
-    chrome.tabs.sendMessage(tab.id, { type: "CAPTURE_SELECTION" }, () => {
-      if (chrome.runtime.lastError) saveSelectionTextFallback(info, tab); // no content script here
+  if (info.menuItemId === "kb-save-selection") {
+    // Prefer the content script so the selection keeps its structure (tables, lists).
+    if (tab?.id != null) {
+      chrome.tabs.sendMessage(tab.id, { type: "CAPTURE_SELECTION" }, () => {
+        if (chrome.runtime.lastError) saveSelectionTextFallback(info, tab); // no content script here
+      });
+    } else {
+      saveSelectionTextFallback(info, tab);
+    }
+  } else if (info.menuItemId === "kb-save-image" && info.srcUrl) {
+    handleSave({
+      text: "![](" + info.srcUrl + ")",
+      source: detectSource(tab?.url || info.pageUrl),
+      url: tab?.url || info.pageUrl || "",
+      pageTitle: tab?.title || ""
+    }).catch((err) => {
+      flashBadge("!", "#dc2626");
+      try {
+        chrome.notifications.create({
+          type: "basic",
+          iconUrl: "icons/icon48.png",
+          title: "Knowledge Book — save failed",
+          message: String(err.message || err)
+        });
+      } catch (_) {}
     });
-  } else {
-    saveSelectionTextFallback(info, tab);
   }
 });
 

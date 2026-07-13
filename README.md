@@ -22,12 +22,16 @@ create, and stay searchable. Everything lives **on your own device**.
   you ask for it.
 - **Structure preserved** — tables, lists, headings, and code blocks survive the save and
   render cleanly in your book.
-- **Pages (notebooks)** — organize notes into pages you create, and move notes between them.
+- **Images** — capture images inside a selection, or right-click any image → *Save image to
+  Knowledge Book*. They render in your book and export to Obsidian.
+- **Pages (notebooks)** — organize notes into pages you create. Move a note by **dragging
+  its handle onto a page** in the sidebar, or with the dropdown on the note.
 - **Optional AI summaries** — add your own [OpenRouter](https://openrouter.ai) API key to
   auto-generate a title, summary, key points, and tags. Off by default.
-- **Send to Obsidian** — export a single note, or a whole page, to your Obsidian vault with
-  one click.
-- **Markdown export** — download everything as a `.md` file.
+- **Obsidian export** — send a single note or a whole page via an `obsidian://` link, or
+  **Export all to Obsidian** to write your entire book into the vault as files, organized
+  into per-page folders.
+- **Markdown export** — download everything as a single `.md` file.
 - **Private by design** — notes and settings never leave your device (see
   [Privacy](#privacy)).
 
@@ -53,10 +57,13 @@ On **any web page**:
 
 - **Highlight** text → click the floating **Save to Book** button (bottom-right), **or**
 - **Right-click** the selection → **Save selection to Knowledge Book**.
+- **Images:** right-click an image → **Save image to Knowledge Book** (images inside a text
+  selection are captured too).
 - On **ChatGPT / Claude**, hover a message and click **Save** to capture the whole reply.
 
 Open your collection from the toolbar popup → **Open my Book**. There you can search, filter
-by page/source/topic, move notes between pages, export, or send to Obsidian.
+by page/source/topic, and export. To move a note between pages, **drag its handle** (the
+dotted grip on the note) onto a page in the sidebar, or use the dropdown on the note.
 
 ### Optional: AI summaries
 
@@ -69,9 +76,16 @@ The key is stored locally and used only to call OpenRouter directly from your br
 
 ### Optional: Obsidian export
 
-Set your **vault name** (and an optional folder) in Settings, then use the **Obsidian**
-button on a note — or **Send page to Obsidian** — to create the note in your vault via an
-`obsidian://` link. Requires the Obsidian desktop app installed.
+Set your **vault name** and an optional **base folder** in Settings. Three ways to export:
+
+- **A single note** — click **Obsidian** on the note.
+- **A whole page** — open the page and click **Send page to Obsidian**.
+- **Everything** — on **All notes**, click **Export all to Obsidian**, choose your vault
+  folder once, and every note is written straight in as files.
+
+Notes are organized as `‹base folder›/‹page›/‹note›.md`, so your vault mirrors your book.
+The single-note and per-page options use an `obsidian://` link (needs the Obsidian desktop
+app); **Export all** writes the files directly into the folder you pick (Chrome/Edge).
 
 ---
 

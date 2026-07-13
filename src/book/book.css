@@ -254,6 +254,14 @@ body {
 .bk-md ul, .bk-md ol { margin: 8px 0; padding-left: 22px; }
 .bk-md li { margin-bottom: 3px; }
 .bk-md a { color: var(--accent); }
+.bk-md img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  display: block;
+  border: 1px solid var(--line);
+}
 .bk-md code {
   background: #f0ece3;
   padding: 1px 5px;
