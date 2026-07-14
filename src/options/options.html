@@ -219,7 +219,8 @@
           <label for="model">Model</label>
           <p class="hint">
             Any model on <a href="https://openrouter.ai/models" target="_blank" rel="noreferrer">openrouter.ai/models</a>,
-            written as <code>provider/model</code>. <code>openai/gpt-4o-mini</code> is cheap and works well.
+            written as <code>provider/model</code>. <code>openai/gpt-4o-mini</code> is cheap, works well,
+            and can read text from images (used by &ldquo;Extract text from image&rdquo; and screenshot paste).
           </p>
           <input id="model" type="text" placeholder="openai/gpt-4o-mini" />
         </div>
@@ -243,6 +244,11 @@
           <label for="defaultPage">Default notebook for new saves</label>
           <p class="hint">New notes land here. You can move them between notebooks any time.</p>
           <input id="defaultPage" type="text" placeholder="Inbox" />
+        </div>
+
+        <div class="row">
+          <input id="groupSamePage" type="checkbox" class="switch" />
+          <label for="groupSamePage"><strong>Group saves from the same page</strong> <span class="opt">(new highlights from a page you saved from in the last 20 minutes are added to that note instead of creating a new one)</span></label>
         </div>
 
         <div class="field">

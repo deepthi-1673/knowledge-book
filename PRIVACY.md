@@ -20,8 +20,10 @@ Obsidian.
   save and any custom instructions you set are sent to OpenRouter using **your own API
   key**, solely to generate a summary. Likewise, if you use **Ask your book**, your question
   and the notes most relevant to it are sent to OpenRouter using your own key to produce the
-  answer. These features are optional and require a key you provide. Your use of OpenRouter
-  is governed by OpenRouter's privacy policy.
+  answer; and if you use **Extract text from image** or paste a screenshot into your book,
+  that image is sent to OpenRouter using your own key to transcribe its text. These features
+  are optional and require a key you provide. Your use of OpenRouter is governed by
+  OpenRouter's privacy policy.
 - **Obsidian (on your device):** If you click "Send to Obsidian", the note content is
   passed to the Obsidian desktop application on your computer via an `obsidian://` link.
   Nothing is uploaded to any server in this step.

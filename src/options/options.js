@@ -8,7 +8,8 @@ const DEFAULTS = {
   customPrompt: "",
   defaultPage: "Inbox",
   obsidianVault: "",
-  obsidianFolder: "Knowledge Book"
+  obsidianFolder: "Knowledge Book",
+  groupSamePage: true
 };
 
 const els = {
@@ -17,6 +18,7 @@ const els = {
   useAI: document.getElementById("useAI"),
   customPrompt: document.getElementById("customPrompt"),
   defaultPage: document.getElementById("defaultPage"),
+  groupSamePage: document.getElementById("groupSamePage"),
   obsidianVault: document.getElementById("obsidianVault"),
   obsidianFolder: document.getElementById("obsidianFolder"),
   save: document.getElementById("save"),
@@ -35,6 +37,7 @@ function load() {
     els.useAI.checked = s.useAI !== false;
     els.customPrompt.value = s.customPrompt || "";
     els.defaultPage.value = s.defaultPage || "Inbox";
+    els.groupSamePage.checked = s.groupSamePage !== false;
     els.obsidianVault.value = s.obsidianVault || "";
     els.obsidianFolder.value = s.obsidianFolder || "";
   });
@@ -47,6 +50,7 @@ function save() {
     useAI: els.useAI.checked,
     customPrompt: els.customPrompt.value.trim(),
     defaultPage: els.defaultPage.value.trim() || "Inbox",
+    groupSamePage: els.groupSamePage.checked,
     obsidianVault: els.obsidianVault.value.trim(),
     obsidianFolder: els.obsidianFolder.value.trim()
   };

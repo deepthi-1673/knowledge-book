@@ -7,7 +7,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 Knowledge Book is a browser extension for keeping the parts of the web worth remembering.
-Highlight text on any page — a ChatGPT or Claude answer, documentation, an article, a
+Highlight text on any page — an answer from any AI chat, documentation, an article, a
 dashboard — and save it as a note. Notes keep their formatting, get filed into pages you
 create, and stay searchable. Everything lives **on your own device**.
 
@@ -15,18 +15,28 @@ create, and stay searchable. Everything lives **on your own device**.
 
 ## Features
 
-- **Save from anywhere** — highlight text on any site, then use the floating **Save to
-  journal** button or the right-click menu. On ChatGPT and Claude, a per-message **save**
-  button lets you grab a whole reply at once.
+- **Save from anywhere** — highlight text on any site or AI chat, then use the floating
+  **Save to journal** button or the right-click menu. On popular AI chats (ChatGPT, Claude,
+  Gemini, Perplexity, DeepSeek, Copilot, Grok, Mistral) notes are labeled with their source,
+  and a per-message **save** button lets you grab a whole reply at once.
 - **Verbatim by default** — notes store exactly what you highlighted. No summarizing unless
   you ask for it.
 - **Structure preserved** — tables, lists, headings, and code blocks survive the save and
   render cleanly in your book.
 - **Images** — capture images inside a selection, or right-click any image → *Save image to
   Knowledge Book*. They render in your book and export to Obsidian.
+- **Read text from images & PDFs (AI OCR)** — right-click an image → *Extract text from
+  image*, or screenshot anything (a scanned PDF, a slide, a video frame) and press
+  **Ctrl+V in your book**: the text is transcribed into a Markdown note using your
+  OpenRouter key (needs a vision-capable model like `openai/gpt-4o-mini`).
 - **Notebooks** — organize notes into notebooks you create (shown as colored tabs in the
   sidebar). Move a note by **dragging its handle onto a tab**, or with the "move to"
   dropdown on the note.
+- **One page, one note** — saving several highlights from the same page within 20 minutes
+  **adds them to the same note** (with dividers) instead of creating a pile of fragments.
+  Toggle it in Settings.
+- **Merge notes** — drag one note's handle **onto another note** to combine them (text is
+  appended, tags are merged).
 - **Optional AI summaries** — add your own [OpenRouter](https://openrouter.ai) API key to
   auto-generate a title, summary, key points, and tags. Off by default.
 - **Ask your book (AI)** — with an OpenRouter key set, ask a question and get an answer
@@ -70,13 +80,25 @@ On **any web page**:
 - **Right-click** the selection → **Save selection to Knowledge Book**.
 - **Images:** right-click an image → **Save image to Knowledge Book** (images inside a text
   selection are captured too).
-- On **ChatGPT / Claude**, hover a message and click **Save** to capture the whole reply.
+- On popular **AI chats** (ChatGPT, Claude, Gemini, Perplexity, DeepSeek, Copilot, Grok,
+  Mistral), hover a message and click **save** to capture the whole reply — and any other
+  AI works too via highlight-save.
 
-Open your collection from the toolbar popup → **Open my Book**. Notes are shown as a clean,
+**PDFs and images** (needs your OpenRouter key for the OCR parts):
+
+- **PDF with selectable text** — select it, then right-click → *Save selection to Knowledge
+  Book* (the floating button can't run inside Chrome's PDF viewer, but the menu works).
+- **Scanned PDF / anything you can't select** — screenshot the region (`Win+Shift+S`),
+  open your book, and press **Ctrl+V**. The text is transcribed into a note, tagged with a
+  **Screenshot** source.
+- **An image with text in it** — right-click it → **Extract text from image (AI)**.
+
+Open your collection from the toolbar popup → **Open my journal**. Notes are shown as a clean,
 scannable list — each is **collapsed to a title + short preview**; click a note to expand and
-read it in full, click again to collapse. You can search, filter by page/source/topic, and
-export. To move a note between pages, **drag its handle** (the dotted grip on the note) onto a
-page in the sidebar, or use the dropdown on the note.
+read it in full, click again to collapse. You can search, filter by notebook/source/topic, and
+export. Drag a note's handle (the dotted grip) **onto a notebook tab to move it**, or **onto
+another note to merge the two**. Saving several highlights from the same page within 20
+minutes appends them to one note automatically (Settings → "Group saves from the same page").
 
 ### Optional: AI summaries
 
@@ -86,6 +108,9 @@ page in the sidebar, or use the dropdown on the note.
 4. Turn on **Summarize with AI when I save**.
 
 The key is stored locally and used only to call OpenRouter directly from your browser.
+With summaries on, the note's body is the AI summary + key points — your **exact captured
+text is always kept** and shown, fully formatted, under **Show original text** on the note.
+Turn the toggle off any time to go back to verbatim-as-the-body saves.
 
 ### Ask your book
 

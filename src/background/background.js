@@ -16,7 +16,8 @@ const DEFAULT_SETTINGS = {
   customPrompt: "",
   defaultPage: DEFAULT_PAGE,
   obsidianVault: "",
-  obsidianFolder: "Knowledge Book"
+  obsidianFolder: "Knowledge Book",
+  groupSamePage: true
 };
 
 // ---------- storage helpers ----------
@@ -60,8 +61,20 @@ function setPages(pages) {
 // ---------- utilities ----------
 function detectSource(url) {
   if (!url) return "Web";
-  if (url.includes("claude.ai")) return "Claude";
-  if (url.includes("chatgpt.com") || url.includes("openai.com")) return "ChatGPT";
+  const table = [
+    ["claude.ai", "Claude"],
+    ["chatgpt.com", "ChatGPT"],
+    ["chat.openai.com", "ChatGPT"],
+    ["gemini.google.com", "Gemini"],
+    ["perplexity.ai", "Perplexity"],
+    ["chat.deepseek.com", "DeepSeek"],
+    ["copilot.microsoft.com", "Copilot"],
+    ["grok.com", "Grok"],
+    ["chat.mistral.ai", "Mistral"]
+  ];
+  for (const [h, name] of table) {
+    if (url.includes(h)) return name;
+  }
   return "Web";
 }
 
@@ -107,6 +120,62 @@ async function flashBadge(text, color) {
     await chrome.action.setBadgeText({ text });
     setTimeout(() => chrome.action.setBadgeText({ text: "" }), 2500);
   } catch (_) {}
+}
+
+// ---------- OCR: read text out of an image via a vision model ----------
+async function ocrImage(imageUrl, settings) {
+  const body = {
+    model: settings.model || DEFAULT_MODEL,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text:
+              "Transcribe ALL text visible in this image exactly. Preserve the structure as " +
+              "Markdown (headings, lists, tables, code blocks). Output only the transcribed " +
+              "content — no commentary. If the image contains no readable text, reply exactly: " +
+              "No readable text found."
+          },
+          { type: "image_url", image_url: { url: imageUrl } }
+        ]
+      }
+    ],
+    temperature: 0
+  };
+
+  const res = await fetch(OPENROUTER_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + settings.apiKey,
+      "HTTP-Referer": "https://knowledge-book.extension",
+      "X-Title": "Knowledge Book"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    let detail = "";
+    try {
+      const err = await res.json();
+      detail = err?.error?.message || JSON.stringify(err);
+    } catch (_) {
+      detail = await res.text().catch(() => "");
+    }
+    throw new Error(
+      "OpenRouter API " + res.status + ": " + detail +
+      (res.status === 400 || res.status === 404
+        ? " (your model may not support images — try a vision model like openai/gpt-4o-mini)"
+        : "")
+    );
+  }
+
+  const data = await res.json();
+  const text = (data?.choices?.[0]?.message?.content || "").trim();
+  if (!text) throw new Error("The model returned no text for this image.");
+  return text;
 }
 
 // ---------- Ask-your-book (Q&A over the user's saved notes) ----------
@@ -225,18 +294,40 @@ async function summarize(text, settings, source) {
 }
 
 // ---------- core save flow ----------
-async function handleSave({ text, source, url, pageTitle }) {
+async function handleSave({ text, source, url, pageTitle, skipAI }) {
   const clean = (text || "").trim();
   if (!clean) throw new Error("Nothing to save (empty text).");
 
   const settings = await getSettings();
   source = source || detectSource(url);
 
+  // Group rapid saves from the same page into one note (verbatim mode only):
+  // if a non-AI note from this URL was saved/updated in the last 20 minutes,
+  // append the new highlight to it instead of creating a separate note.
+  if (settings.groupSamePage !== false && !(settings.useAI && settings.apiKey) && url) {
+    const APPEND_WINDOW = 20 * 60 * 1000;
+    const existing = await getEntries();
+    const target = existing.find(
+      (x) =>
+        x &&
+        x.url === url &&
+        !x.aiUsed &&
+        Date.now() - (x.updatedAt || x.createdAt) < APPEND_WINDOW
+    );
+    if (target) {
+      target.original = (target.original || "") + "\n\n---\n\n" + clean;
+      target.updatedAt = Date.now();
+      await setEntries(existing);
+      flashBadge("OK", "#16a34a");
+      return { ...target, appended: true };
+    }
+  }
+
   const imageOnly = /^!\[[^\]]*\]\([^)]+\)$/.test(clean);
 
   let note;
   let aiUsed = false;
-  if (settings.useAI && settings.apiKey && !imageOnly) {
+  if (settings.useAI && settings.apiKey && !imageOnly && !skipAI) {
     note = await summarize(clean, settings, source);
     aiUsed = true;
   } else {
@@ -288,6 +379,11 @@ function setupMenus() {
     chrome.contextMenus.create({
       id: "kb-save-image",
       title: "Save image to Knowledge Book",
+      contexts: ["image"]
+    });
+    chrome.contextMenus.create({
+      id: "kb-ocr-image",
+      title: "Extract text from image (AI)",
       contexts: ["image"]
     });
   });
@@ -348,6 +444,35 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
         });
       } catch (_) {}
     });
+  } else if (info.menuItemId === "kb-ocr-image" && info.srcUrl) {
+    (async () => {
+      const settings = await getSettings();
+      if (!settings.apiKey) {
+        throw new Error("Add an OpenRouter API key in Settings to extract text from images.");
+      }
+      if (info.srcUrl.startsWith("blob:")) {
+        throw new Error("This image can't be fetched directly — screenshot it and paste (Ctrl+V) into your book instead.");
+      }
+      flashBadge("…", "#55713f");
+      const text = await ocrImage(info.srcUrl, settings);
+      await handleSave({
+        text,
+        source: detectSource(tab?.url || info.pageUrl),
+        url: tab?.url || info.pageUrl || "",
+        pageTitle: tab?.title || "",
+        skipAI: true
+      });
+    })().catch((err) => {
+      flashBadge("!", "#dc2626");
+      try {
+        chrome.notifications.create({
+          type: "basic",
+          iconUrl: "icons/icon48.png",
+          title: "Knowledge Book — couldn't extract text",
+          message: String(err.message || err)
+        });
+      } catch (_) {}
+    });
   }
 });
 
@@ -366,6 +491,23 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ ok: false, error: String(err.message || err) });
       });
     return true; // keep channel open for async response
+  }
+  if (msg?.type === "OCR_IMAGE") {
+    (async () => {
+      const settings = await getSettings();
+      if (!settings.apiKey) throw new Error("Add an OpenRouter API key in Settings first.");
+      const text = await ocrImage(msg.dataUrl, settings);
+      return handleSave({
+        text,
+        source: "Screenshot",
+        url: "",
+        pageTitle: msg.title || "Pasted image",
+        skipAI: true
+      });
+    })()
+      .then((entry) => sendResponse({ ok: true, entry }))
+      .catch((err) => sendResponse({ ok: false, error: String(err.message || err) }));
+    return true;
   }
   if (msg?.type === "OPEN_BOOK") {
     chrome.tabs.create({ url: chrome.runtime.getURL("src/book/book.html") });

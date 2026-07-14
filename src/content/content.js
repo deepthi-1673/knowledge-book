@@ -6,11 +6,21 @@
   window.__kbInjected = true;
 
   const host = location.hostname;
-  const SOURCE = host.includes("claude.ai")
-    ? "Claude"
-    : host.includes("chatgpt.com") || host.includes("openai.com")
-    ? "ChatGPT"
-    : "Web";
+
+  // Known AI chat sites: proper source label + best-effort per-message selectors.
+  // Highlight-save and right-click save work on EVERY site regardless of this list.
+  const AI_SITES = [
+    { name: "ChatGPT", hosts: ["chatgpt.com", "chat.openai.com"], selectors: ["[data-message-author-role]"] },
+    { name: "Claude", hosts: ["claude.ai"], selectors: ["[data-testid='user-message']", ".font-claude-message", "div.font-claude-response"] },
+    { name: "Gemini", hosts: ["gemini.google.com"], selectors: ["message-content"] },
+    { name: "Perplexity", hosts: ["perplexity.ai", "www.perplexity.ai"], selectors: [".prose"] },
+    { name: "DeepSeek", hosts: ["chat.deepseek.com"], selectors: [".ds-markdown"] },
+    { name: "Copilot", hosts: ["copilot.microsoft.com"], selectors: ["[data-content='ai-message']"] },
+    { name: "Grok", hosts: ["grok.com"], selectors: [".message-bubble"] },
+    { name: "Mistral", hosts: ["chat.mistral.ai"], selectors: ["[data-message-id]"] }
+  ];
+  const site = AI_SITES.find((s) => s.hosts.some((h) => host === h || host.endsWith("." + h)));
+  const SOURCE = site ? site.name : "Web";
 
   // ---------- HTML -> Markdown (preserves structure) ----------
   function serialize(node) {
@@ -217,7 +227,8 @@
           }
           if (resp?.ok) {
             const t = resp.entry?.note?.title || "";
-            toast("✓ Saved to your journal" + (t ? ": " + t : "") + "  ", true);
+            const verb = resp.entry?.appended ? "✓ Added to" : "✓ Saved to your journal";
+            toast(verb + (t ? ": " + t : "") + "  ", true);
           } else {
             toast("Couldn't save: " + (resp?.error || "unknown error"));
           }
@@ -264,13 +275,8 @@
   document.addEventListener("mouseup", updateFabVisibility);
   document.addEventListener("keyup", updateFabVisibility);
 
-  // ---------- per-message Save buttons (best-effort) ----------
-  const MSG_SELECTORS = [
-    "[data-message-author-role]",
-    "[data-testid='user-message']",
-    ".font-claude-message",
-    "div.font-claude-response"
-  ];
+  // ---------- per-message Save buttons (best-effort, host-scoped) ----------
+  const MSG_SELECTORS = site ? site.selectors : [];
 
   function decorate(el) {
     if (!el || el.__kbDecorated) return;
@@ -304,15 +310,17 @@
     });
   }
 
-  let scanQueued = false;
-  const observer = new MutationObserver(() => {
-    if (scanQueued) return;
-    scanQueued = true;
-    setTimeout(() => {
-      scanQueued = false;
-      scan(document);
-    }, 400);
-  });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
-  scan(document);
+  if (MSG_SELECTORS.length) {
+    let scanQueued = false;
+    const observer = new MutationObserver(() => {
+      if (scanQueued) return;
+      scanQueued = true;
+      setTimeout(() => {
+        scanQueued = false;
+        scan(document);
+      }, 400);
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    scan(document);
+  }
 })();
