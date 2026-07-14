@@ -16,8 +16,7 @@ const DEFAULT_SETTINGS = {
   customPrompt: "",
   defaultPage: DEFAULT_PAGE,
   obsidianVault: "",
-  obsidianFolder: "Knowledge Book",
-  groupSamePage: true
+  obsidianFolder: "Knowledge Book"
 };
 
 // ---------- storage helpers ----------
@@ -301,28 +300,6 @@ async function handleSave({ text, source, url, pageTitle, skipAI }) {
   const settings = await getSettings();
   source = source || detectSource(url);
 
-  // Group rapid saves from the same page into one note (verbatim mode only):
-  // if a non-AI note from this URL was saved/updated in the last 20 minutes,
-  // append the new highlight to it instead of creating a separate note.
-  if (settings.groupSamePage !== false && !(settings.useAI && settings.apiKey) && url) {
-    const APPEND_WINDOW = 20 * 60 * 1000;
-    const existing = await getEntries();
-    const target = existing.find(
-      (x) =>
-        x &&
-        x.url === url &&
-        !x.aiUsed &&
-        Date.now() - (x.updatedAt || x.createdAt) < APPEND_WINDOW
-    );
-    if (target) {
-      target.original = (target.original || "") + "\n\n---\n\n" + clean;
-      target.updatedAt = Date.now();
-      await setEntries(existing);
-      flashBadge("OK", "#16a34a");
-      return { ...target, appended: true };
-    }
-  }
-
   const imageOnly = /^!\[[^\]]*\]\([^)]+\)$/.test(clean);
 
   let note;
@@ -362,8 +339,18 @@ async function handleSave({ text, source, url, pageTitle, skipAI }) {
     await setPages(pages);
   }
 
+  // If an earlier note exists for this same page, surface it so the user can
+  // choose (on the page, via the toast) to append this save into it.
+  let sameUrlTarget = null;
+  if (url) {
+    const prev = entries.find((x) => x && x.id !== entry.id && x.url === url && !x.aiUsed);
+    if (prev) {
+      sameUrlTarget = { id: prev.id, title: (prev.note && prev.note.title) || "Saved text" };
+    }
+  }
+
   flashBadge("OK", "#16a34a");
-  return entry;
+  return { entry, sameUrlTarget };
 }
 
 // ---------- context menu ----------
@@ -485,12 +472,30 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       url: msg.payload?.url || sender.tab?.url || "",
       pageTitle: msg.payload?.pageTitle || sender.tab?.title || ""
     })
-      .then((entry) => sendResponse({ ok: true, entry }))
+      .then(({ entry, sameUrlTarget }) => sendResponse({ ok: true, entry, sameUrlTarget }))
       .catch((err) => {
         flashBadge("!", "#dc2626");
         sendResponse({ ok: false, error: String(err.message || err) });
       });
     return true; // keep channel open for async response
+  }
+  if (msg?.type === "MERGE_NOTES") {
+    (async () => {
+      const entries = await getEntries();
+      const src = entries.find((x) => x && x.id === msg.srcId);
+      const dst = entries.find((x) => x && x.id === msg.dstId);
+      if (!src || !dst) throw new Error("Note not found — it may have been moved or deleted.");
+      dst.original = (dst.original || "") + "\n\n---\n\n" + (src.original || "");
+      dst.note = dst.note || {};
+      const tags = new Set((dst.note.tags || []).concat((src.note && src.note.tags) || []));
+      dst.note.tags = Array.from(tags);
+      dst.updatedAt = Date.now();
+      await setEntries(entries.filter((x) => x.id !== msg.srcId));
+      return dst;
+    })()
+      .then((dst) => sendResponse({ ok: true, entry: dst }))
+      .catch((err) => sendResponse({ ok: false, error: String(err.message || err) }));
+    return true;
   }
   if (msg?.type === "OCR_IMAGE") {
     (async () => {
@@ -505,7 +510,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         skipAI: true
       });
     })()
-      .then((entry) => sendResponse({ ok: true, entry }))
+      .then(({ entry }) => sendResponse({ ok: true, entry }))
       .catch((err) => sendResponse({ ok: false, error: String(err.message || err) }));
     return true;
   }

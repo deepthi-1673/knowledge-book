@@ -162,14 +162,28 @@
   // ---------- toast ----------
   let toastEl;
   let toastTimer;
-  function toast(message, withOpen) {
+  // toast(message, { open: true, action: { label, fn } })
+  function toast(message, opts) {
+    opts = opts === true ? { open: true } : opts || {};
     if (!toastEl) {
       toastEl = document.createElement("div");
       toastEl.className = "kb-toast";
       document.documentElement.appendChild(toastEl);
     }
     toastEl.textContent = message;
-    if (withOpen) {
+    let interactive = false;
+    if (opts.action) {
+      const btn = document.createElement("span");
+      btn.className = "kb-toast-action";
+      btn.textContent = opts.action.label;
+      btn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        opts.action.fn();
+      });
+      toastEl.appendChild(btn);
+      interactive = true;
+    }
+    if (opts.open) {
       const link = document.createElement("span");
       link.className = "kb-toast-open";
       link.textContent = "open →";
@@ -180,13 +194,13 @@
         } catch (_) {}
       });
       toastEl.appendChild(link);
-      toastEl.style.pointerEvents = "auto";
-    } else {
-      toastEl.style.pointerEvents = "none";
+      interactive = true;
     }
+    toastEl.style.pointerEvents = interactive ? "auto" : "none";
     toastEl.classList.add("kb-show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove("kb-show"), withOpen ? 5000 : 3200);
+    const ms = opts.action ? 9000 : opts.open ? 5000 : 3200;
+    toastTimer = setTimeout(() => toastEl.classList.remove("kb-show"), ms);
   }
 
   // ---------- save ----------
@@ -227,8 +241,32 @@
           }
           if (resp?.ok) {
             const t = resp.entry?.note?.title || "";
-            const verb = resp.entry?.appended ? "✓ Added to" : "✓ Saved to your journal";
-            toast(verb + (t ? ": " + t : "") + "  ", true);
+            if (resp.sameUrlTarget) {
+              // an earlier note exists for this page — let the user decide, right here
+              const full = resp.sameUrlTarget.title || "earlier note";
+              const short = full.length > 24 ? full.slice(0, 24) + "…" : full;
+              toast("✓ Saved · same page as an earlier note ", {
+                open: true,
+                action: {
+                  label: 'add to "' + short + '" →',
+                  fn: () => {
+                    chrome.runtime.sendMessage(
+                      { type: "MERGE_NOTES", srcId: resp.entry.id, dstId: resp.sameUrlTarget.id },
+                      (r2) => {
+                        if (chrome.runtime.lastError) {
+                          toast("Error: " + chrome.runtime.lastError.message);
+                          return;
+                        }
+                        if (r2?.ok) toast('✓ Added to "' + short + '"  ', { open: true });
+                        else toast("Couldn't merge: " + ((r2 && r2.error) || "unknown error"));
+                      }
+                    );
+                  }
+                }
+              });
+            } else {
+              toast("✓ Saved to your journal" + (t ? ": " + t : "") + "  ", { open: true });
+            }
           } else {
             toast("Couldn't save: " + (resp?.error || "unknown error"));
           }

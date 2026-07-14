@@ -20,6 +20,8 @@
         --tape: rgba(222, 192, 128, 0.75);
         --rust: #b9663f;
         --ok: #4c7a3d;
+        --accent-fill: #445c31;
+        --fill-ink: #fdfaf0;
         --font-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
         --font-hand: "Ink Free", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
       }
@@ -35,6 +37,8 @@
         --tape: rgba(150, 128, 76, 0.5);
         --rust: #d9835c;
         --ok: #9fc084;
+        --accent-fill: #3a4b26;
+        --fill-ink: #dfe6cd;
       }
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
@@ -49,6 +53,8 @@
           --tape: rgba(150, 128, 76, 0.5);
           --rust: #d9835c;
           --ok: #9fc084;
+          --accent-fill: #3a4b26;
+          --fill-ink: #dfe6cd;
         }
       }
       * { box-sizing: border-box; }
@@ -73,8 +79,8 @@
       .brand-mark {
         display: inline-flex; align-items: center; justify-content: center;
         width: 42px; height: 42px; border-radius: 12px;
-        background: var(--accent-strong);
-        color: #fdfaf0; font: 700 18px/1 var(--font-hand);
+        background: var(--accent-fill);
+        color: var(--fill-ink); font: 700 18px/1 var(--font-hand);
         flex: none;
       }
       .subtitle { margin: 0 0 18px 54px; color: var(--muted); font-size: 13px; }
@@ -155,14 +161,14 @@
         transition: transform 0.18s ease;
       }
       .switch:checked {
-        background: var(--accent-strong);
-        border-color: var(--accent-strong);
+        background: var(--accent-fill);
+        border-color: var(--accent-fill);
       }
       .switch:checked::before { transform: translateX(21px); }
       .field { margin-bottom: 16px; }
       button#save {
-        background: var(--accent-strong);
-        color: #fdfaf0;
+        background: var(--accent-fill);
+        color: var(--fill-ink);
         border: none;
         border-radius: 999px;
         padding: 13px 28px;
@@ -170,7 +176,7 @@
         font-weight: 700;
         cursor: pointer;
         margin-top: 24px;
-        box-shadow: 0 6px 16px var(--accent-ring);
+        box-shadow: 0 6px 16px color-mix(in srgb, var(--accent-fill) 45%, transparent);
         transition: filter 0.14s ease, transform 0.1s ease;
       }
       button#save:hover { filter: brightness(1.08); }
@@ -244,11 +250,6 @@
           <label for="defaultPage">Default notebook for new saves</label>
           <p class="hint">New notes land here. You can move them between notebooks any time.</p>
           <input id="defaultPage" type="text" placeholder="Inbox" />
-        </div>
-
-        <div class="row">
-          <input id="groupSamePage" type="checkbox" class="switch" />
-          <label for="groupSamePage"><strong>Group saves from the same page</strong> <span class="opt">(new highlights from a page you saved from in the last 20 minutes are added to that note instead of creating a new one)</span></label>
         </div>
 
         <div class="field">

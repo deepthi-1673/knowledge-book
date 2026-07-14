@@ -32,8 +32,21 @@
       <header class="bk-head">
         <h1 id="bk-title">All notes</h1>
         <span id="bk-count" class="bk-count"></span>
+        <button id="bk-help" class="bk-help" type="button" title="How to use your book">i</button>
         <span id="bk-head-actions" class="bk-head-actions"></span>
       </header>
+
+      <div id="bk-help-panel" class="bk-help-panel" hidden>
+        <h3>field guide</h3>
+        <ul>
+          <li><strong>Open / fold a note</strong> — click its title.</li>
+          <li><strong>Move a note to another notebook</strong> — drag its dotted grip onto a notebook tab in the sidebar, or use <em>move to &rarr;</em> inside the note.</li>
+          <li><strong>Merge two notes</strong> — drag one note's grip onto another note, drop, confirm.</li>
+          <li><strong>Save together</strong> — when you save again from a page you've saved from before, the on-page toast offers <em>add to "&hellip;"</em> so highlights land in one note.</li>
+          <li><strong>Read text from a screenshot</strong> — snip anything (a PDF, a slide) and press <strong>Ctrl+V</strong> here; it becomes a text note (needs your API key).</li>
+          <li><strong>Ask</strong> — the bar at the top answers questions from your own notes.</li>
+        </ul>
+      </div>
       <div id="bk-entries" class="bk-entries"></div>
       <div id="bk-empty" class="bk-emptystate" hidden>
         <div class="bk-empty-mark" aria-hidden="true">

@@ -32,9 +32,9 @@ create, and stay searchable. Everything lives **on your own device**.
 - **Notebooks** — organize notes into notebooks you create (shown as colored tabs in the
   sidebar). Move a note by **dragging its handle onto a tab**, or with the "move to"
   dropdown on the note.
-- **One page, one note** — saving several highlights from the same page within 20 minutes
-  **adds them to the same note** (with dividers) instead of creating a pile of fragments.
-  Toggle it in Settings.
+- **One page, one note — your call** — when you save another highlight from a page you've
+  already saved from, the toast offers **add to "‹earlier note›"** right there. One click
+  appends it to that note (with a divider); ignore it and the save stays separate.
 - **Merge notes** — drag one note's handle **onto another note** to combine them (text is
   appended, tags are merged).
 - **Optional AI summaries** — add your own [OpenRouter](https://openrouter.ai) API key to
@@ -97,8 +97,10 @@ Open your collection from the toolbar popup → **Open my journal**. Notes are s
 scannable list — each is **collapsed to a title + short preview**; click a note to expand and
 read it in full, click again to collapse. You can search, filter by notebook/source/topic, and
 export. Drag a note's handle (the dotted grip) **onto a notebook tab to move it**, or **onto
-another note to merge the two**. Saving several highlights from the same page within 20
-minutes appends them to one note automatically (Settings → "Group saves from the same page").
+another note to merge the two**. When you save another highlight from a page you've already
+saved from, the on-page toast offers **add to "‹earlier note›"** — click it to append, or
+ignore it to keep the save separate. Click the **i** button in the book header any time for
+a quick field guide to all of these gestures.
 
 ### Optional: AI summaries
 
