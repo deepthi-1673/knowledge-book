@@ -34,10 +34,12 @@ create, and stay searchable. Everything lives **on your own device**.
   becomes a queryable second brain, not just an archive.
 - **Per-note AI actions** — expand any note and use **Explain simply**, **Give an example**,
   or **Quiz me**, powered by your key.
-- **Obsidian export** — send a single note or a whole page via an `obsidian://` link, or
-  **Export all to Obsidian** to write your entire book into the vault as files, organized
-  into per-page folders.
-- **Markdown export** — download everything as a single `.md` file.
+- **Export anywhere** — everything is plain Markdown. Write your whole book into any folder
+  as `.md` files organized by notebook (works with Obsidian, Logseq, Notion import, or any
+  notes app), send single notes or pages straight to Obsidian, or download one combined
+  `.md` file.
+- **Backup & restore** — download a full JSON backup (notes, notebooks, settings — never
+  your API key) and restore it on any machine. Restores merge; nothing is deleted.
 - **Field-journal design** — paper-and-ink cards with washi-tape accents, handwritten
   labels, pastel notebook tabs, and serif reading text. Follows your system theme, with a
   manual **Night camp** light/dark toggle in the book.
@@ -94,18 +96,21 @@ notes most relevant to your question are sent to OpenRouter as context.
 Expanding a note also reveals **per-note AI actions** — **Explain simply**, **Give an
 example**, and **Quiz me** — which run against just that note.
 
-### Optional: Obsidian export
+### Export & backup
 
-Set your **vault name** and an optional **base folder** in Settings. Three ways to export:
+Everything is stored as plain Markdown, so your notes are never locked in:
 
-- **A single note** — click **Obsidian** on the note.
-- **A whole page** — open the page and click **Send page to Obsidian**.
-- **Everything** — on the **Everything** view, click **Export all to Obsidian**, choose your vault
-  folder once, and every note is written straight in as files.
-
-Notes are organized as `‹base folder›/‹page›/‹note›.md`, so your vault mirrors your book.
-The single-note and per-page options use an `obsidian://` link (needs the Obsidian desktop
-app); **Export all** writes the files directly into the folder you pick (Chrome/Edge).
+- **Export notes to a folder…** (on the **Everything** view) — writes every note as `.md`
+  files organized by notebook (`‹base folder›/‹notebook›/‹note›.md`) into any folder you
+  pick: an Obsidian vault, a Logseq graph, a synced Drive/Dropbox folder, anywhere.
+- **Obsidian one-click** — the **Obsidian** button on a note, or **Send page to Obsidian**,
+  creates the note in your vault via an `obsidian://` link (set the vault name in Settings;
+  needs the Obsidian desktop app).
+- **Export all** (sidebar) — one combined `.md` file, ready for Notion import, Google Docs,
+  or anywhere else.
+- **Backup & restore** (in Settings) — download a JSON backup of notes, notebooks, and
+  settings (your API key is never included), and restore it later or on another machine.
+  Restoring merges by note ID, so nothing gets deleted or duplicated.
 
 ---
 
