@@ -15,17 +15,18 @@ create, and stay searchable. Everything lives **on your own device**.
 
 ## Features
 
-- **Save from anywhere** — highlight text on any site, then use the floating **Save to Book**
-  button or the right-click menu. On ChatGPT and Claude, a per-message **Save** button lets
-  you grab a whole reply at once.
+- **Save from anywhere** — highlight text on any site, then use the floating **Save to
+  journal** button or the right-click menu. On ChatGPT and Claude, a per-message **save**
+  button lets you grab a whole reply at once.
 - **Verbatim by default** — notes store exactly what you highlighted. No summarizing unless
   you ask for it.
 - **Structure preserved** — tables, lists, headings, and code blocks survive the save and
   render cleanly in your book.
 - **Images** — capture images inside a selection, or right-click any image → *Save image to
   Knowledge Book*. They render in your book and export to Obsidian.
-- **Pages (notebooks)** — organize notes into pages you create. Move a note by **dragging
-  its handle onto a page** in the sidebar, or with the dropdown on the note.
+- **Notebooks** — organize notes into notebooks you create (shown as colored tabs in the
+  sidebar). Move a note by **dragging its handle onto a tab**, or with the "move to"
+  dropdown on the note.
 - **Optional AI summaries** — add your own [OpenRouter](https://openrouter.ai) API key to
   auto-generate a title, summary, key points, and tags. Off by default.
 - **Ask your book (AI)** — with an OpenRouter key set, ask a question and get an answer
@@ -37,7 +38,9 @@ create, and stay searchable. Everything lives **on your own device**.
   **Export all to Obsidian** to write your entire book into the vault as files, organized
   into per-page folders.
 - **Markdown export** — download everything as a single `.md` file.
-- **Light & dark mode** — the whole UI follows your system theme automatically.
+- **Field-journal design** — paper-and-ink cards with washi-tape accents, handwritten
+  labels, pastel notebook tabs, and serif reading text. Follows your system theme, with a
+  manual **Night camp** light/dark toggle in the book.
 - **Private by design** — notes and settings never leave your device (see
   [Privacy](#privacy)).
 
@@ -61,7 +64,7 @@ create, and stay searchable. Everything lives **on your own device**.
 
 On **any web page**:
 
-- **Highlight** text → click the floating **Save to Book** button (bottom-right), **or**
+- **Highlight** text → click the floating **Save to journal** button (bottom-right), **or**
 - **Right-click** the selection → **Save selection to Knowledge Book**.
 - **Images:** right-click an image → **Save image to Knowledge Book** (images inside a text
   selection are captured too).
@@ -97,7 +100,7 @@ Set your **vault name** and an optional **base folder** in Settings. Three ways 
 
 - **A single note** — click **Obsidian** on the note.
 - **A whole page** — open the page and click **Send page to Obsidian**.
-- **Everything** — on **All notes**, click **Export all to Obsidian**, choose your vault
+- **Everything** — on the **Everything** view, click **Export all to Obsidian**, choose your vault
   folder once, and every note is written straight in as files.
 
 Notes are organized as `‹base folder›/‹page›/‹note›.md`, so your vault mirrors your book.

@@ -7,9 +7,11 @@
     <title>My Knowledge Book</title>
   </head>
   <body>
+    <button id="bk-theme" class="bk-theme" type="button" title="Toggle light / dark">&#9790; Night camp</button>
     <aside class="bk-side">
-      <div class="bk-brand"><span class="bk-logo">KB</span> Knowledge Book</div>
-      <input id="bk-search" class="bk-search" type="search" placeholder="Search your notes…" />
+      <div class="bk-brand">Knowledge Book</div>
+      <p id="bk-sub" class="bk-sub"></p>
+      <input id="bk-search" class="bk-search" type="search" placeholder="Flip through the pages…" />
       <nav id="bk-toc" class="bk-toc"></nav>
       <div class="bk-side-foot">
         <button id="bk-export" class="bk-ghost">Export all</button>
@@ -20,11 +22,9 @@
     <main class="bk-main">
       <section id="bk-ask" class="bk-ask" hidden>
         <div class="bk-ask-bar">
-          <span class="bk-ask-spark" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.7 5.6L19.5 9l-5.8 1.4L12 16l-1.7-5.6L4.5 9l5.8-1.4L12 2z"/></svg>
-          </span>
-          <input id="bk-ask-input" class="bk-ask-input" type="text" placeholder="Ask your notes anything…" />
-          <button id="bk-ask-send" class="bk-ask-send">Ask</button>
+          <span class="bk-ask-label" aria-hidden="true">ask &rarr;</span>
+          <input id="bk-ask-input" class="bk-ask-input" type="text" placeholder="Ask your journal anything — it answers from your own notes" />
+          <button id="bk-ask-send" class="bk-ask-send">Ask &#10022;</button>
         </div>
         <div id="bk-ask-answer" class="bk-ask-answer" hidden></div>
       </section>
@@ -45,7 +45,7 @@
         <h2>Your book is empty</h2>
         <p>
           On any page, highlight something worth keeping and click the
-          <strong>Save to Book</strong> button (or right-click &rarr; <em>Save selection to Knowledge Book</em>).
+          <strong>Save to journal</strong> button (or right-click &rarr; <em>Save selection to Knowledge Book</em>).
           Your notes will collect here.
         </p>
       </div>

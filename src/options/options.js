@@ -24,6 +24,10 @@ const els = {
 };
 
 function load() {
+  chrome.storage.local.get("kb_theme", (d) => {
+    const t = d.kb_theme;
+    if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+  });
   chrome.storage.local.get(SETTINGS_KEY, (data) => {
     const s = { ...DEFAULTS, ...(data[SETTINGS_KEY] || {}) };
     els.apiKey.value = s.apiKey;

@@ -8,7 +8,7 @@
   </head>
   <body>
     <header class="pk-head">
-      <span class="pk-logo">KB</span>
+      <span class="pk-logo">Kb</span>
       <div>
         <h1>Knowledge Book</h1>
         <p id="pk-status" class="pk-status">Loading…</p>
@@ -16,16 +16,21 @@
     </header>
 
     <div class="pk-actions">
-      <button id="pk-open" class="pk-btn pk-primary">Open my Book</button>
+      <button id="pk-open" class="pk-btn pk-primary">Open my journal &#9998;</button>
       <button id="pk-options" class="pk-btn">Settings</button>
     </div>
 
     <div class="pk-recent">
-      <h2>Recent notes</h2>
+      <div class="pk-recent-head">
+        <h2>Fresh clippings</h2>
+        <button id="pk-seeall" class="pk-seeall">see all &rarr;</button>
+      </div>
       <div id="pk-list" class="pk-list">
-        <p class="pk-empty">Nothing saved yet. Highlight text on any page and click the Save to Book button.</p>
+        <p class="pk-empty">Nothing saved yet. Highlight text on any page and click Save to journal.</p>
       </div>
     </div>
+
+    <p class="pk-hint">highlight anything, then &ldquo;save to journal&rdquo;</p>
 
     <script src="popup.js"></script>
   </body>

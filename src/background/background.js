@@ -103,7 +103,7 @@ function stripJsonFences(s) {
 
 async function flashBadge(text, color) {
   try {
-    await chrome.action.setBadgeBackgroundColor({ color: color || "#7c3aed" });
+    await chrome.action.setBadgeBackgroundColor({ color: color || "#55713f" });
     await chrome.action.setBadgeText({ text });
     setTimeout(() => chrome.action.setBadgeText({ text: "" }), 2500);
   } catch (_) {}
@@ -366,6 +366,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ ok: false, error: String(err.message || err) });
       });
     return true; // keep channel open for async response
+  }
+  if (msg?.type === "OPEN_BOOK") {
+    chrome.tabs.create({ url: chrome.runtime.getURL("src/book/book.html") });
+    sendResponse({ ok: true });
+    return false;
   }
   if (msg?.type === "ASK_BOOK") {
     (async () => {

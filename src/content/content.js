@@ -152,16 +152,31 @@
   // ---------- toast ----------
   let toastEl;
   let toastTimer;
-  function toast(message) {
+  function toast(message, withOpen) {
     if (!toastEl) {
       toastEl = document.createElement("div");
       toastEl.className = "kb-toast";
       document.documentElement.appendChild(toastEl);
     }
     toastEl.textContent = message;
+    if (withOpen) {
+      const link = document.createElement("span");
+      link.className = "kb-toast-open";
+      link.textContent = "open →";
+      link.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        try {
+          chrome.runtime.sendMessage({ type: "OPEN_BOOK" });
+        } catch (_) {}
+      });
+      toastEl.appendChild(link);
+      toastEl.style.pointerEvents = "auto";
+    } else {
+      toastEl.style.pointerEvents = "none";
+    }
     toastEl.classList.add("kb-show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove("kb-show"), 3200);
+    toastTimer = setTimeout(() => toastEl.classList.remove("kb-show"), withOpen ? 5000 : 3200);
   }
 
   // ---------- save ----------
@@ -180,14 +195,14 @@
   function save(text) {
     const clean = (text || "").trim();
     if (!clean) {
-      toast("Select some text first, then click Save to Book");
+      toast("Select some text first, then click Save to journal");
       return;
     }
     if (!extAlive()) {
       toast(STALE_MSG);
       return;
     }
-    toast("Saving to your book…");
+    toast("Saving to your journal…");
     try {
       chrome.runtime.sendMessage(
         {
@@ -202,7 +217,7 @@
           }
           if (resp?.ok) {
             const t = resp.entry?.note?.title || "";
-            toast("Saved to your book" + (t ? ": " + t : ""));
+            toast("✓ Saved to your journal" + (t ? ": " + t : "") + "  ", true);
           } else {
             toast("Couldn't save: " + (resp?.error || "unknown error"));
           }
@@ -228,7 +243,7 @@
   fab.className = "kb-fab";
   fab.type = "button";
   fab.title = "Knowledge Book: save the highlighted text";
-  fab.textContent = "Save to Book";
+  fab.textContent = "Save to journal ✎";
   fab.style.display = "none";
   // Keep the selection alive when pressing the button (a plain click can collapse it).
   fab.addEventListener("mousedown", (e) => e.preventDefault());
@@ -266,7 +281,7 @@
     const btn = document.createElement("button");
     btn.className = "kb-msg-btn";
     btn.type = "button";
-    btn.textContent = "Save";
+    btn.textContent = "save ✎";
     btn.title = "Save this whole message to your Knowledge Book";
     btn.addEventListener("click", (e) => {
       e.preventDefault();

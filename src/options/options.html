@@ -5,155 +5,247 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Knowledge Book — Settings</title>
     <style>
+      /* Field-journal theme */
       :root {
-        --accent: #7c3aed;
-        --accent-2: #a855f7;
-        --accent-strong: #6d28d9;
-        --accent-ring: color-mix(in srgb, var(--accent) 30%, transparent);
-        --bg: #f6f6f8;
-        --surface: #ffffff;
-        --ink: #17171c;
-        --muted: #6b6b77;
-        --line: #e6e6eb;
-        --ok: #16a34a;
+        --accent: #55713f;
+        --accent-strong: #445c31;
+        --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+        --accent-ring: color-mix(in srgb, var(--accent) 26%, transparent);
+        --bg: #f3eee1;
+        --surface: #fdfaf0;
+        --surface-2: #ece4d0;
+        --ink: #2f2a1d;
+        --muted: #827962;
+        --line: #ddd2b8;
+        --tape: rgba(222, 192, 128, 0.75);
+        --rust: #b9663f;
+        --ok: #4c7a3d;
+        --font-serif: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+        --font-hand: "Ink Free", "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+      }
+      :root[data-theme="dark"] {
+        --accent: #8fa871;
+        --accent-strong: #7a9459;
+        --bg: #15120c;
+        --surface: #1f1b12;
+        --surface-2: #2a2418;
+        --ink: #eae3d2;
+        --muted: #a49a83;
+        --line: #362f1f;
+        --tape: rgba(150, 128, 76, 0.5);
+        --rust: #d9835c;
+        --ok: #9fc084;
       }
       @media (prefers-color-scheme: dark) {
-        :root {
-          --accent: #8b5cf6;
-          --accent-2: #a855f7;
-          --accent-strong: #7c3aed;
-          --bg: #0c0c10;
-          --surface: #16161c;
-          --ink: #ececf1;
-          --muted: #9a9aa8;
-          --line: #26262f;
-          --ok: #34d399;
+        :root:not([data-theme="light"]) {
+          --accent: #8fa871;
+          --accent-strong: #7a9459;
+          --bg: #15120c;
+          --surface: #1f1b12;
+          --surface-2: #2a2418;
+          --ink: #eae3d2;
+          --muted: #a49a83;
+          --line: #362f1f;
+          --tape: rgba(150, 128, 76, 0.5);
+          --rust: #d9835c;
+          --ok: #9fc084;
         }
       }
       * { box-sizing: border-box; }
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         color: var(--ink);
         background: var(--bg);
         margin: 0;
         padding: 48px 20px;
         -webkit-font-smoothing: antialiased;
       }
-      .wrap { max-width: 580px; margin: 0 auto; }
-      h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; display: flex; align-items: center; gap: 10px; }
+      .wrap { max-width: 600px; margin: 0 auto; }
+      h1 {
+        font-family: var(--font-hand);
+        font-size: 28px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0 0 2px;
+      }
       .brand-mark {
         display: inline-flex; align-items: center; justify-content: center;
-        width: 32px; height: 32px; border-radius: 9px;
-        background: linear-gradient(135deg, var(--accent), var(--accent-2));
-        color: #fff; font-size: 13px; font-weight: 800; letter-spacing: 0.02em;
-        box-shadow: 0 4px 12px var(--accent-ring);
+        width: 42px; height: 42px; border-radius: 12px;
+        background: var(--accent-strong);
+        color: #fdfaf0; font: 700 18px/1 var(--font-hand);
+        flex: none;
       }
+      .subtitle { margin: 0 0 18px 54px; color: var(--muted); font-size: 13px; }
       .card {
+        position: relative;
         background: var(--surface);
         border: 1px solid var(--line);
         border-radius: 16px;
-        padding: 24px;
-        margin-top: 18px;
-        box-shadow: 0 1px 2px rgba(20, 20, 35, 0.05);
+        padding: 26px 26px 24px;
+        margin-top: 26px;
+        box-shadow: 0 1px 3px rgba(80, 66, 38, 0.08);
       }
-      label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 6px; }
-      .hint { color: var(--muted); font-size: 12px; margin: 4px 0 14px; line-height: 1.55; }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: -11px;
+        width: 96px;
+        height: 20px;
+        background: var(--tape);
+        border-radius: 2px;
+        pointer-events: none;
+      }
+      .card.tape-left::before { left: 28px; transform: rotate(-2deg); }
+      .card.tape-right::before { right: 28px; transform: rotate(2deg); }
+      .card h2 {
+        font-family: var(--font-hand);
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 16px;
+        color: var(--accent-strong);
+      }
+      .card.tape-right h2 { color: var(--rust); }
+      label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+      label .opt { font-weight: 500; color: var(--muted); }
+      .hint { color: var(--muted); font-size: 12.5px; margin: 2px 0 12px; line-height: 1.55; }
       input[type="text"], input[type="password"], textarea, select {
         width: 100%;
-        padding: 11px 13px;
+        padding: 12px 14px;
         border: 1px solid var(--line);
-        border-radius: 11px;
+        border-radius: 12px;
         font-size: 14px;
         font-family: inherit;
         background: var(--bg);
         color: var(--ink);
       }
       textarea { min-height: 84px; resize: vertical; }
-      .row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-      .row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
-      .row label { margin: 0; }
-      button {
-        background: linear-gradient(135deg, var(--accent), var(--accent-2));
-        color: #fff;
-        border: none;
-        border-radius: 11px;
-        padding: 11px 22px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        margin-top: 8px;
-        box-shadow: 0 6px 16px var(--accent-ring);
-      }
-      button:hover { filter: brightness(1.05); }
-      #saved { color: var(--ok); font-weight: 600; font-size: 13px; margin-left: 12px; opacity: 0; transition: opacity 0.2s; }
-      #saved.show { opacity: 1; }
-      a { color: var(--accent); }
       input:focus, textarea:focus {
         outline: none;
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        box-shadow: 0 0 0 3px var(--accent-ring);
       }
-      input, textarea, button { transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, transform 0.1s ease; }
-      button:active { transform: translateY(1px); }
-      button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      .row { display: flex; align-items: flex-start; gap: 12px; margin: 18px 0; }
+      .row label { margin: 2px 0 0; line-height: 1.45; }
+      /* toggle switch */
+      .switch {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 48px;
+        height: 27px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        position: relative;
+        cursor: pointer;
+        flex: none;
+        transition: background 0.18s ease, border-color 0.18s ease;
+      }
+      .switch::before {
+        content: "";
+        position: absolute;
+        top: 2.5px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fdfaf0;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+        transition: transform 0.18s ease;
+      }
+      .switch:checked {
+        background: var(--accent-strong);
+        border-color: var(--accent-strong);
+      }
+      .switch:checked::before { transform: translateX(21px); }
+      .field { margin-bottom: 16px; }
+      button#save {
+        background: var(--accent-strong);
+        color: #fdfaf0;
+        border: none;
+        border-radius: 999px;
+        padding: 13px 28px;
+        font-size: 14.5px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 24px;
+        box-shadow: 0 6px 16px var(--accent-ring);
+        transition: filter 0.14s ease, transform 0.1s ease;
+      }
+      button#save:hover { filter: brightness(1.08); }
+      button#save:active { transform: translateY(1px); }
+      #saved { color: var(--ok); font: 700 15px/1 var(--font-hand); margin-left: 12px; opacity: 0; transition: opacity 0.2s; }
+      #saved.show { opacity: 1; }
+      a { color: var(--rust); }
+      button:focus-visible, a:focus-visible, .switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+      code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: 0.9em; }
     </style>
   </head>
   <body>
     <div class="wrap">
-      <h1><span class="brand-mark">KB</span> Knowledge Book Settings</h1>
+      <h1><span class="brand-mark">Kb</span> journal settings</h1>
+      <p class="subtitle">everything stays on this device</p>
 
-      <div class="card">
-        <label for="apiKey">OpenRouter API key</label>
-        <p class="hint">
-          Used to write the concise notes. Get one at
-          <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer">openrouter.ai/keys</a>.
-          It is stored only on this device (Chrome local storage) and sent directly to OpenRouter — nowhere else.
-        </p>
-        <input id="apiKey" type="password" placeholder="sk-or-v1-..." autocomplete="off" />
+      <div class="card tape-left">
+        <h2>the note-writing assistant</h2>
 
-        <label for="model" style="margin-top:16px;">Model</label>
-        <p class="hint">
-          Any model on <a href="https://openrouter.ai/models" target="_blank" rel="noreferrer">openrouter.ai/models</a>,
-          written as <code>provider/model</code>. <code>openai/gpt-4o-mini</code> is cheap and works well; other options
-          include <code>anthropic/claude-3.5-sonnet</code>, <code>google/gemini-flash-1.5</code>, or
-          <code>meta-llama/llama-3.3-70b-instruct</code>.
-        </p>
-        <input id="model" type="text" placeholder="openai/gpt-4o-mini" />
-
-        <div class="row" style="margin-top:16px;">
-          <input id="useAI" type="checkbox" />
-          <label for="useAI">Summarize with AI when I save (leave OFF to keep the exact text you highlighted)</label>
+        <div class="field">
+          <label for="apiKey">OpenRouter API key</label>
+          <p class="hint">
+            Used to write the concise notes and answer questions from your journal. Get one at
+            <a href="https://openrouter.ai/keys" target="_blank" rel="noreferrer">openrouter.ai/keys</a>.
+            Stored only on this device and sent directly to OpenRouter — nowhere else.
+          </p>
+          <input id="apiKey" type="password" placeholder="sk-or-v1-..." autocomplete="off" />
         </div>
 
-        <label for="customPrompt">Extra note-writing instructions (optional)</label>
-        <p class="hint">e.g. "Write for a beginner", "Always include a code example if present", "Keep tags in Telugu".</p>
-        <textarea id="customPrompt" placeholder=""></textarea>
-
-        <hr style="border:none;border-top:1px solid var(--line);margin:22px 0;" />
-
-        <label for="defaultPage">Default page for new saves</label>
-        <p class="hint">New notes land in this page/notebook. You can move them to other pages later in the book.</p>
-        <input id="defaultPage" type="text" placeholder="Inbox" />
-
-        <label for="obsidianVault" style="margin-top:16px;">Obsidian vault name (for “Send to Obsidian”)</label>
-        <p class="hint">
-          The exact name shown in Obsidian's vault switcher. Leave blank to use your last-opened vault.
-          Sending requires the Obsidian app installed on this computer.
-        </p>
-        <input id="obsidianVault" type="text" placeholder="My Vault" />
-
-        <label for="obsidianFolder" style="margin-top:16px;">Obsidian base folder (optional)</label>
-        <p class="hint">
-          Notes are filed as <code>&lt;folder&gt;/&lt;page&gt;/&lt;note&gt;</code> in your vault — each page becomes
-          its own subfolder. Example base folder: <code>Knowledge Book</code>. Leave blank to use the vault root
-          (notes still get organized into per-page subfolders).
-        </p>
-        <input id="obsidianFolder" type="text" placeholder="Knowledge Book" />
-
-        <div style="margin-top:18px;">
-          <button id="save">Save settings</button>
-          <span id="saved">Saved</span>
+        <div class="field">
+          <label for="model">Model</label>
+          <p class="hint">
+            Any model on <a href="https://openrouter.ai/models" target="_blank" rel="noreferrer">openrouter.ai/models</a>,
+            written as <code>provider/model</code>. <code>openai/gpt-4o-mini</code> is cheap and works well.
+          </p>
+          <input id="model" type="text" placeholder="openai/gpt-4o-mini" />
         </div>
+
+        <div class="row">
+          <input id="useAI" type="checkbox" class="switch" />
+          <label for="useAI"><strong>Summarize with AI when I save</strong> <span class="opt">(off = keep the exact text you highlighted)</span></label>
+        </div>
+
+        <div class="field">
+          <label for="customPrompt">Extra note-writing instructions <span class="opt">(optional)</span></label>
+          <p class="hint">e.g. &ldquo;Write for a beginner&rdquo;, &ldquo;Always include a code example if present&rdquo;.</p>
+          <textarea id="customPrompt" placeholder="write like you'd explain it to a friend…"></textarea>
+        </div>
+      </div>
+
+      <div class="card tape-right">
+        <h2>filing &amp; export</h2>
+
+        <div class="field">
+          <label for="defaultPage">Default notebook for new saves</label>
+          <p class="hint">New notes land here. You can move them between notebooks any time.</p>
+          <input id="defaultPage" type="text" placeholder="Inbox" />
+        </div>
+
+        <div class="field">
+          <label for="obsidianVault">Obsidian vault name <span class="opt">(for &ldquo;Send to Obsidian&rdquo;)</span></label>
+          <p class="hint">The exact name in Obsidian's vault switcher. Leave blank to use your last-opened vault.</p>
+          <input id="obsidianVault" type="text" placeholder="My Vault" />
+        </div>
+
+        <div class="field">
+          <label for="obsidianFolder">Obsidian base folder <span class="opt">(optional)</span></label>
+          <p class="hint">Notes are filed as <code>folder/notebook/note</code> — each notebook becomes its own subfolder.</p>
+          <input id="obsidianFolder" type="text" placeholder="Knowledge Book" />
+        </div>
+      </div>
+
+      <div>
+        <button id="save">Save settings</button>
+        <span id="saved">saved ✓</span>
       </div>
     </div>
     <script src="options.js"></script>
