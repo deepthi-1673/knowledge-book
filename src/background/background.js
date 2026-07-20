@@ -354,25 +354,31 @@ async function handleSave({ text, source, url, pageTitle, skipAI }) {
 }
 
 // ---------- context menu ----------
+let menusBuilding = false;
 function setupMenus() {
-  // removeAll first so a leftover item can't cause a duplicate-id error that
-  // aborts creation of the remaining items.
+  // onInstalled and onStartup can both fire at browser launch; guard so the
+  // removeAll→create sequences don't interleave and collide on duplicate ids.
+  if (menusBuilding) return;
+  menusBuilding = true;
   chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({
+    // the callback reads lastError so a benign duplicate never logs as unchecked
+    const mk = (props) => chrome.contextMenus.create(props, () => void chrome.runtime.lastError);
+    mk({
       id: "kb-save-selection",
       title: "Save selection to Knowledge Book",
       contexts: ["selection"]
     });
-    chrome.contextMenus.create({
+    mk({
       id: "kb-save-image",
       title: "Save image to Knowledge Book",
       contexts: ["image"]
     });
-    chrome.contextMenus.create({
+    mk({
       id: "kb-ocr-image",
       title: "Extract text from image (AI)",
       contexts: ["image"]
     });
+    menusBuilding = false;
   });
 }
 

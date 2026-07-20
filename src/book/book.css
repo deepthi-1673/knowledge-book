@@ -1090,6 +1090,9 @@ body {
   justify-content: center;
   padding: 20px;
 }
+.bk-tour[hidden] {
+  display: none;
+}
 .bk-tour-card {
   position: relative;
   background: var(--surface);
@@ -1099,6 +1102,8 @@ body {
   max-width: 540px;
   width: 100%;
   padding: 30px 34px 22px;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .bk-tour-card::before {
   content: "";
