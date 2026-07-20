@@ -1079,6 +1079,125 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
+/* ===== First-run tour ===== */
+.bk-tour {
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 22, 13, 0.55);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.bk-tour-card {
+  position: relative;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  max-width: 540px;
+  width: 100%;
+  padding: 30px 34px 22px;
+}
+.bk-tour-card::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 110px;
+  height: 22px;
+  background: var(--tape);
+  transform: translateX(-50%) rotate(-2deg);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.bk-tour-step h3 {
+  margin: 0 0 12px;
+  font: 700 24px/1.2 var(--font-hand);
+  color: var(--accent-strong);
+}
+.bk-tour-step p {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.bk-tour-foot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+.bk-tour-skip {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font: 600 13px/1 var(--font-hand);
+  cursor: pointer;
+  padding: 4px 2px;
+}
+.bk-tour-skip:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.bk-tour-dots {
+  flex: 1;
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+}
+.bk-tour-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--line);
+}
+.bk-tour-dot.on {
+  background: var(--accent);
+}
+.bk-tour-nav {
+  display: flex;
+  gap: 8px;
+}
+.bk-tour-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--fill-ink);
+  cursor: pointer;
+  background: var(--accent-fill);
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--accent-fill) 40%, transparent);
+  transition: filter 0.14s ease, transform 0.1s ease;
+}
+.bk-tour-btn:hover {
+  filter: brightness(1.08);
+}
+.bk-tour-btn:active {
+  transform: translateY(1px);
+}
+.bk-tour-btn.bk-tour-ghost {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.bk-tour-again {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: var(--accent-strong);
+  font: 700 14px/1 var(--font-hand);
+  cursor: pointer;
+  padding: 2px 0;
+}
+.bk-tour-again:hover {
+  text-decoration: underline;
+}
+
 /* ===== Focus & scrollbars ===== */
 button:focus-visible,
 a:focus-visible,

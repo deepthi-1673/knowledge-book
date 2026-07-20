@@ -46,6 +46,7 @@
           <li><strong>Read text from a screenshot</strong> — snip anything (a PDF, a slide) and press <strong>Ctrl+V</strong> here; it becomes a text note (needs your API key).</li>
           <li><strong>Ask</strong> — the bar at the top answers questions from your own notes.</li>
         </ul>
+        <button id="bk-tour-again" class="bk-tour-again" type="button">take the tour again &rarr;</button>
       </div>
       <div id="bk-entries" class="bk-entries"></div>
       <div id="bk-empty" class="bk-emptystate" hidden>
@@ -63,6 +64,57 @@
         </p>
       </div>
     </main>
+
+    <div id="bk-tour" class="bk-tour" hidden>
+      <div class="bk-tour-card">
+        <div class="bk-tour-step">
+          <h3>welcome to your knowledge book</h3>
+          <p>
+            Highlight text on <strong>any page</strong> — an AI chat, docs, an article — and click the
+            green <strong>Save to journal</strong> button that pops up. Or right-click a selection (or an
+            image) and pick <em>Save to Knowledge Book</em>.
+          </p>
+        </div>
+        <div class="bk-tour-step" hidden>
+          <h3>reading your notes</h3>
+          <p>
+            Notes fold to a title + short preview — <strong>click a title</strong> to open or fold it.
+            Tables, lists, code, and images are kept exactly as captured.
+          </p>
+        </div>
+        <div class="bk-tour-step" hidden>
+          <h3>notebooks, moving &amp; merging</h3>
+          <p>
+            Make notebooks with <em>+ new</em>. Drag a note's <strong>dotted grip onto a notebook tab</strong>
+            to move it — or <strong>onto another note</strong> to merge them. Save twice from the same page
+            and the toast offers <em>add to "…"</em> so one page stays one note.
+          </p>
+        </div>
+        <div class="bk-tour-step" hidden>
+          <h3>optional AI powers</h3>
+          <p>
+            Add your own OpenRouter key in <strong>Settings</strong> to unlock <strong>Ask</strong> (answers
+            from your own notes), summaries, <em>explain / example / quiz</em> on any note, and
+            screenshot&nbsp;→&nbsp;text: snip anything and press <strong>Ctrl+V</strong> right here.
+          </p>
+        </div>
+        <div class="bk-tour-step" hidden>
+          <h3>never locked in</h3>
+          <p>
+            Everything is Markdown. Send notes to Obsidian, export the whole book to any folder, or
+            download a JSON backup in Settings. Happy collecting!
+          </p>
+        </div>
+        <div class="bk-tour-foot">
+          <button id="bk-tour-skip" class="bk-tour-skip" type="button">skip tour</button>
+          <div id="bk-tour-dots" class="bk-tour-dots"></div>
+          <div class="bk-tour-nav">
+            <button id="bk-tour-back" class="bk-tour-btn bk-tour-ghost" type="button" hidden>back</button>
+            <button id="bk-tour-next" class="bk-tour-btn" type="button">next &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="book.js"></script>
   </body>

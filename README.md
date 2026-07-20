@@ -68,6 +68,9 @@ create, and stay searchable. Everything lives **on your own device**.
 4. Click **Load unpacked** and select the project folder.
 5. Pin the toolbar icon for quick access.
 
+On first install the book opens with a short **welcome tour** of the basics; revisit it any
+time via the **i** button in the book header → *take the tour again*.
+
 > A Chrome Web Store listing is on the way.
 
 ---

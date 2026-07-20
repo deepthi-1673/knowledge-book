@@ -376,11 +376,17 @@ function setupMenus() {
   });
 }
 
-chrome.runtime.onInstalled.addListener(async () => {
+chrome.runtime.onInstalled.addListener(async (details) => {
   setupMenus();
   // seed the default page so the book has something to show
   const pages = await getPages();
   await setPages(pages);
+  // first install → open the book with the welcome tour
+  if (details && details.reason === "install") {
+    try {
+      chrome.tabs.create({ url: chrome.runtime.getURL("src/book/book.html?welcome=1") });
+    } catch (_) {}
+  }
 });
 // also (re)create menus when the browser/extension starts up
 chrome.runtime.onStartup.addListener(setupMenus);

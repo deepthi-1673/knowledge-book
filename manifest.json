@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Knowledge Book",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Save highlighted text from any web page into a searchable book of notes, with optional AI summaries and one-click Obsidian export.",
   "permissions": ["storage", "contextMenus", "notifications"],
   "host_permissions": [
